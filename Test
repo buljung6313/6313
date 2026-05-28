@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세상에서 가장 쓸모없는 식물 TOP 10</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0f0a;
+    --green-dark: #1a2e1a;
+    --green-mid: #2d5a27;
+    --green-bright: #4caf50;
+    --green-lime: #8bc34a;
+    --yellow: #f9c922;
+    --orange: #ff6b35;
+    --cream: #f5f0e8;
+    --text: #e8f5e9;
+    --muted: #7a9e7e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── INTRO ── */
+  #intro {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(ellipse at 60% 40%, #1a3d1a 0%, #0a0f0a 70%);
+  }
+
+  .bg-leaves {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .leaf {
+    position: absolute;
+    font-size: clamp(2rem, 5vw, 5rem);
+    opacity: 0.07;
+    animation: drift linear infinite;
+    user-select: none;
+  }
+
+  @keyframes drift {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.07; }
+    90%  { opacity: 0.07; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  .channel-badge {
+    background: var(--green-bright);
+    color: #000;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    padding: 0.3rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .intro-title {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    line-height: 1.1;
+    color: var(--cream);
+    animation: fadeDown 0.7s 0.1s ease both;
+  }
+
+  .intro-title span.highlight {
+    color: var(--yellow);
+    display: inline-block;
+  }
+
+  .intro-subtitle {
+    margin-top: 1.2rem;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--muted);
+    font-weight: 300;
+    animation: fadeDown 0.7s 0.2s ease both;
+  }
+
+  .scroll-cta {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    animation: fadeDown 0.7s 0.4s ease both;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .scroll-arrow {
+    width: 28px;
+    height: 28px;
+    border-right: 2px solid var(--green-bright);
+    border-bottom: 2px solid var(--green-bright);
+    transform: rotate(45deg);
+    animation: bounce 1.4s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50%       { transform: rotate(45deg) translateY(6px); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CARDS ── */
+  #cards {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .rank-card {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1.5rem;
+    background: var(--green-dark);
+    border: 1px solid #243d24;
+    border-radius: 12px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .rank-img-wrap {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #1a2e1a;
+    margin-top: 0.5rem;
+  }
+
+  .rank-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85);
+    transition: filter 0.3s, transform 0.4s;
+  }
+
+  .rank-card:hover .rank-img-wrap img {
+    filter: saturate(1.15);
+    transform: scale(1.06);
+  }
+
+  .yt-badge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,0,0,0.85);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-align: center;
+    padding: 3px 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .rank-img-wrap {
+    position: relative;
+  }
+
+  .rank-img-wrap:hover .yt-badge {
+    opacity: 1;
+  }
+
+  .img-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 2.5rem;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+  }
+
+  .rank-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .rank-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(76,175,80,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .rank-card:hover {
+    border-color: var(--green-bright);
+    box-shadow: 0 0 30px rgba(76,175,80,0.15);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .rank-num {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 0.3rem;
+  }
+
+  .rank-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .rank-number {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--green-bright);
+  }
+
+  .rank-number.gold   { color: var(--yellow); }
+  .rank-number.silver { color: #c0c0c0; }
+  .rank-number.bronze { color: #cd7f32; }
+
+  .rank-emoji {
+    font-size: 2rem;
+    margin-top: 0.4rem;
+  }
+
+  .rank-body {}
+
+  .rank-name {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: var(--cream);
+    margin-bottom: 0.25rem;
+  }
+
+  .rank-latin {
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  .rank-desc {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: #b8d4ba;
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .tag-useless  { background: rgba(255,107,53,0.2);  color: var(--orange); border: 1px solid rgba(255,107,53,0.4); }
+  .tag-weird    { background: rgba(139,195,74,0.15); color: var(--green-lime); border: 1px solid rgba(139,195,74,0.35); }
+  .tag-fun      { background: rgba(249,201,34,0.15); color: var(--yellow); border: 1px solid rgba(249,201,34,0.35); }
+  .tag-toxic    { background: rgba(220,50,50,0.15);  color: #ff6b6b; border: 1px solid rgba(220,50,50,0.3); }
+
+  .useless-meter {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .meter-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .meter-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .meter-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--green-mid), var(--green-bright));
+    width: 0;
+    transition: width 1.2s ease 0.3s;
+  }
+
+  .rank-card.visible .meter-fill {
+    width: var(--fill);
+  }
+
+  /* ── OUTRO ── */
+  #outro {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, var(--bg), var(--green-dark));
+  }
+
+  .outro-title {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+
+  .outro-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+  }
+
+  .like-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--green-bright);
+    color: #000;
+    border: none;
+    border-radius: 40px;
+    padding: 0.9rem 2.2rem;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+  }
+
+  .like-btn:hover { background: var(--green-lime); transform: scale(1.05); }
+  .like-btn:active { transform: scale(0.97); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 560px) {
+    .rank-card { grid-template-columns: 70px 1fr; gap: 1rem; padding: 1.2rem; }
+    .rank-number { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FLOATING LEAVES BG -->
+<div class="bg-leaves" id="bgLeaves"></div>
+
+<!-- ── INTRO ── -->
+<section id="intro">
+  <div class="channel-badge">🌿 식물 다큐멘터리</div>
+  <h1 class="intro-title">
+    세상에서<br>가장 <span class="highlight">희귀한</span> 식물<br>TOP 10
+  </h1>
+  <p class="intro-subtitle">지구상에 거의 남지 않은 경이로운 식물들을 소개합니다</p>
+  <a class="scroll-cta" href="#cards">
+    지금 바로 확인하기
+    <div class="scroll-arrow"></div>
+  </a>
+</section>
+
+<!-- ── CARDS ── -->
+<section id="cards"></section>
+
+<!-- ── OUTRO ── -->
+<section id="outro">
+  <div class="outro-title">🌱 결론</div>
+  <p class="outro-sub">
+    이 식물들은 지구에서 사라져가고 있습니다.<br>
+    우리가 지금 지키지 않으면,<br>
+    다음 세대는 사진으로만 보게 될지도 몰라요.
+  </p>
+
+</section>
+
+<script>
+const plants = [
+  {
+    rank: 10, name: "미들마이스트 레드", latin: "Middlemist camellia", emoji: "🌺",
+    wiki: "Middlemist%27s_red",
+    ytQuery: "Middlemist red rarest flower world",
+    desc: "세상에 단 두 그루만 남아있는 꽃입니다. 하나는 영국 런던의 첼시 피직 가든, 다른 하나는 뉴질랜드에 있습니다. 18세기 중국에서 가져온 이후 중국에서는 멸종되어 버렸습니다.",
+    tags: [{t:"전 세계 2그루", c:"tag-toxic"},{t:"18세기 도입", c:"tag-fun"},{t:"멸종위기", c:"tag-weird"}], rare: 99
+  },
+  {
+    rank: 9, name: "울레미 파인", latin: "Wollemia nobilis", emoji: "🌲",
+    wiki: "Wollemia",
+    ytQuery: "Wollemi pine rare dinosaur tree discovery",
+    desc: "공룡과 함께 살았던 나무로 9000만 년 전부터 존재했습니다. 1994년 호주 협곡에서 겨우 100그루 미만이 발견되었습니다. 발견 전까지는 화석으로만 알려진 '살아있는 화석'입니다.",
+    tags: [{t:"살아있는 화석", c:"tag-fun"},{t:"9000만 년 역사", c:"tag-weird"},{t:"100그루 미만", c:"tag-toxic"}], rare: 97
+  },
+  {
+    rank: 8, name: "제이드 바인", latin: "Strongylodon macrobotrys", emoji: "💎",
+    wiki: "Strongylodon_macrobotrys",
+    ytQuery: "Jade vine rare blue green flower Philippines",
+    desc: "필리핀 원시림에서만 자라는 청록색 보석 같은 꽃입니다. 서식지 파괴로 야생 개체수가 극도로 줄었으며, 수분을 담당하는 박쥐도 함께 줄어 이중으로 위기입니다.",
+    tags: [{t:"청록색 꽃", c:"tag-weird"},{t:"박쥐 수분", c:"tag-fun"},{t:"서식지 파괴", c:"tag-toxic"}], rare: 93
+  },
+  {
+    rank: 7, name: "고블린 샤크 선인장", latin: "Discocactus subterraneo-proliferans", emoji: "🌵",
+    wiki: "Discocactus",
+    ytQuery: "Discocactus rare cactus Brazil endangered",
+    desc: "브라질에서만 발견되는 초희귀 선인장으로 야생 개체수가 50그루 미만으로 추정됩니다. 야간에만 꽃을 피우고 다음 날 아침이면 지는 단 하루짜리 꽃을 가졌습니다.",
+    tags: [{t:"50그루 미만", c:"tag-toxic"},{t:"하룻밤 꽃", c:"tag-weird"},{t:"브라질 한정", c:"tag-fun"}], rare: 91
+  },
+  {
+    rank: 6, name: "코카이오 나무", latin: "Cocculus haplophyllus", emoji: "🌳",
+    wiki: "Cocculus",
+    ytQuery: "rarest trees world endangered species",
+    desc: "하와이 제도에만 서식하는 극희귀 식물로 현재 야생에 10그루 미만만 남아있습니다. 외래 동물에 의한 새싹 훼손과 서식지 파괴로 자연 번식이 거의 불가능한 상태입니다.",
+    tags: [{t:"10그루 미만", c:"tag-toxic"},{t:"하와이 고유종", c:"tag-weird"},{t:"번식 불가", c:"tag-fun"}], rare: 88
+  },
+  {
+    rank: 5, name: "바오밥 그란디디에리", latin: "Adansonia grandidieri", emoji: "🏺",
+    wiki: "Adansonia_grandidieri",
+    ytQuery: "Adansonia grandidieri baobab Madagascar endangered",
+    desc: "마다가스카르 서해안의 '바오밥 나무 길'로 유명한 이 나무는 현재 멸종위기종입니다. 수천 년을 사는 나무지만 새로운 개체가 거의 자라지 못해 군집이 점점 줄어들고 있습니다.",
+    tags: [{t:"수천 년 수명", c:"tag-fun"},{t:"마다가스카르 한정", c:"tag-weird"},{t:"신규 번식 불가", c:"tag-toxic"}], rare: 85
+  },
+  {
+    rank: 4, name: "자보란디", latin: "Pilocarpus microphyllus", emoji: "🍃",
+    wiki: "Pilocarpus",
+    ytQuery: "Pilocarpus jaborandi rare endangered Amazon",
+    desc: "아마존 원시림에서 발견되는 이 식물은 과도한 의약 성분 채취로 야생 개체가 급감했습니다. 녹내장 치료제 원료로 알려지자 무분별한 채취가 시작되어 현재 멸종위기에 처해 있습니다.",
+    tags: [{t:"의약 원료", c:"tag-fun"},{t:"과채취 피해", c:"tag-toxic"},{t:"아마존 한정", c:"tag-weird"}], rare: 82
+  },
+  {
+    rank: 3, name: "라플레시아 아르놀디", latin: "Rafflesia arnoldii", emoji: "🌸",
+    wiki: "Rafflesia_arnoldii",
+    ytQuery: "Rafflesia arnoldii world largest flower rare",
+    desc: "세계에서 가장 큰 꽃으로 지름이 최대 1m, 무게 11kg에 달합니다. 잎도 줄기도 뿌리도 없이 오직 숙주 식물 속에서만 자라며, 개화 시기를 예측하기 거의 불가능해 목격 자체가 행운입니다.",
+    tags: [{t:"세계 최대 꽃", c:"tag-fun"},{t:"개화 예측 불가", c:"tag-weird"},{t:"기생 생존", c:"tag-toxic"}], rare: 95
+  },
+  {
+    rank: 2, name: "탈리폿 야자", latin: "Corypha umbraculifera", emoji: "🌴",
+    wiki: "Corypha_umbraculifera",
+    ytQuery: "Talipot palm largest inflorescence rare bloom",
+    desc: "평생 단 한 번 꽃을 피우는 야자나무입니다. 30~80년을 살다가 수십억 개의 꽃을 피우고 죽습니다. 그 꽃차례는 세계 최대로 높이 8m까지 자라며, 지구상에서 가장 장엄한 식물의 죽음입니다.",
+    tags: [{t:"평생 1회 개화", c:"tag-weird"},{t:"꽃차례 8m", c:"tag-fun"},{t:"개화 후 사망", c:"tag-toxic"}], rare: 90
+  },
+  {
+    rank: 1, name: "사이크라멘 소말리쿰", latin: "Cyclamen somalense", emoji: "🏆",
+    wiki: "Cyclamen_somalense",
+    ytQuery: "rarest plant world nearly extinct Somalia",
+    desc: "소말리아 단 한 지역에서만 자라는 지구상 가장 희귀한 식물 중 하나입니다. 전 세계 야생 개체수가 수백 그루 이하로 추정되며, 내전과 기후변화로 서식지가 사라져 이름조차 모르는 사람이 대부분입니다.",
+    tags: [{t:"소말리아 단독 서식", c:"tag-toxic"},{t:"수백 그루 미만", c:"tag-weird"},{t:"희귀 챔피언", c:"tag-fun"}], rare: 100
+  }
+];
+
+const medals = { 1: 'gold', 2: 'silver', 3: 'bronze' };
+
+async function fetchWikiImg(wiki) {
+  try {
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${wiki}`);
+    const d = await res.json();
+    return d.thumbnail ? d.thumbnail.source.replace(/\/\d+px-/, '/400px-') : null;
+  } catch { return null; }
+}
+
+async function buildCards() {
+  const section = document.getElementById('cards');
+  const reversed = [...plants].reverse();
+  for (let i = 0; i < reversed.length; i++) {
+    const p = reversed[i];
+    const medalClass = medals[p.rank] ? ` ${medals[p.rank]}` : '';
+    const tagsHtml = p.tags.map(t => `<span class="tag ${t.c}">${t.t}</span>`).join('');
+    const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(p.ytQuery)}`;
+
+    const card = document.createElement('article');
+    card.className = 'rank-card';
+    card.style.transitionDelay = `${i * 0.05}s`;
+
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'rank-img-wrap';
+    imgWrap.title = 'YouTube에서 보기 🎬';
+    imgWrap.style.cursor = 'pointer';
+    imgWrap.addEventListener('click', () => window.open(ytUrl, '_blank'));
+
+    // 이모지 플레이스홀더
+    const placeholder = document.createElement('div');
+    placeholder.className = 'img-placeholder';
+    placeholder.textContent = p.emoji;
+    imgWrap.appendChild(placeholder);
+
+    const ytBadge = document.createElement('div');
+    ytBadge.className = 'yt-badge';
+    ytBadge.textContent = '▶ YouTube';
+    imgWrap.appendChild(ytBadge);
+
+    card.innerHTML = `
+      <div class="rank-num">
+        <span class="rank-label">RANK</span>
+        <span class="rank-number${medalClass}">${p.rank}</span>
+      </div>
+      <div class="rank-body">
+        <div class="rank-name">${p.name}</div>
+        <div class="rank-latin">${p.latin}</div>
+        <p class="rank-desc">${p.desc}</p>
+        <div class="tags">${tagsHtml}</div>
+        <div class="useless-meter">
+          <span class="meter-label">💎 희귀도 지수</span>
+          <div class="meter-bar"><div class="meter-fill" style="--fill:${p.rare}%"></div></div>
+          <span class="meter-label" style="min-width:36px;text-align:right">${p.rare}%</span>
+        </div>
+      </div>
+    `;
+    card.querySelector('.rank-num').appendChild(imgWrap);
+    section.appendChild(card);
+
+    // 비동기로 이미지 교체
+    fetchWikiImg(p.wiki).then(src => {
+      if (!src) return;
+      const img = document.createElement('img');
+      img.alt = p.name;
+      img.src = src;
+      img.onload = () => placeholder.replaceWith(img);
+      img.onerror = () => {}; // 실패하면 이모지 유지
+    });
+  }
+}
+
+// Floating leaves
+function buildLeaves() {
+  const emojis = ['🍃','🌿','🍀','🌱','🪴','🌾','🍂'];
+  const container = document.getElementById('bgLeaves');
+  for (let i = 0; i < 20; i++) {
+    const el = document.createElement('span');
+    el.className = 'leaf';
+    el.textContent = emojis[i % emojis.length];
+    el.style.left = `${Math.random() * 100}%`;
+    el.style.animationDuration = `${8 + Math.random() * 14}s`;
+    el.style.animationDelay = `${-Math.random() * 20}s`;
+    el.style.fontSize = `${1.5 + Math.random() * 3}rem`;
+    container.appendChild(el);
+  }
+}
+
+// Intersection observer
+function observeCards() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.rank-card').forEach(c => io.observe(c));
+}
+
+buildLeaves();
+buildCards().then(() => observeCards());
+</script>
+</body>
+</html>
+
