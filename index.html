@@ -145,7 +145,7 @@
 
   .rank-card {
     display: grid;
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 110px 1fr;
     gap: 1.5rem;
     background: var(--green-dark);
     border: 1px solid #243d24;
@@ -156,6 +156,65 @@
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .rank-img-wrap {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #1a2e1a;
+    margin-top: 0.5rem;
+  }
+
+  .rank-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85);
+    transition: filter 0.3s, transform 0.4s;
+  }
+
+  .rank-card:hover .rank-img-wrap img {
+    filter: saturate(1.15);
+    transform: scale(1.06);
+  }
+
+  .yt-badge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,0,0,0.85);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-align: center;
+    padding: 3px 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .rank-img-wrap {
+    position: relative;
+  }
+
+  .rank-img-wrap:hover .yt-badge {
+    opacity: 1;
+  }
+
+  .img-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 2.5rem;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
   }
 
   .rank-card.visible {
@@ -339,9 +398,9 @@
 <section id="intro">
   <div class="channel-badge">🌿 식물 다큐멘터리</div>
   <h1 class="intro-title">
-    세상에서<br>가장 <span class="highlight">쓸모없는</span> 식물<br>TOP 10
+    세상에서<br>가장 <span class="highlight">희귀한</span> 식물<br>TOP 10
   </h1>
-  <p class="intro-subtitle">존재 이유를 잃어버린 초록빛 친구들을 소개합니다</p>
+  <p class="intro-subtitle">지구상에 거의 남지 않은 경이로운 식물들을 소개합니다</p>
   <a class="scroll-cta" href="#cards">
     지금 바로 확인하기
     <div class="scroll-arrow"></div>
@@ -355,9 +414,9 @@
 <section id="outro">
   <div class="outro-title">🌱 결론</div>
   <p class="outro-sub">
-    이 식물들은 쓸모없어 보이지만,<br>
-    자연에서는 저마다의 이유가 있답니다.<br>
-    (아마도... 아마도요.)
+    이 식물들은 지구에서 사라져가고 있습니다.<br>
+    우리가 지금 지키지 않으면,<br>
+    다음 세대는 사진으로만 보게 될지도 몰라요.
   </p>
 
 </section>
@@ -365,113 +424,121 @@
 <script>
 const plants = [
   {
-    rank: 10,
-    name: "라플레시아",
-    latin: "Rafflesia arnoldii",
-    emoji: "🌸",
-    desc: "세계 최대의 꽃으로 지름이 무려 1m에 달합니다. 화려해 보이지만 썩은 고기 냄새를 풍기며, 광합성도 못하고, 먹을 수도 없습니다. 꽃이 피는 데 수년이 걸리지만 3~7일 만에 지는 초고비용 무능력자.",
-    tags: [{t:"악취의 왕", c:"tag-weird"},{t:"광합성 포기", c:"tag-useless"},{t:"기생식물", c:"tag-toxic"}],
-    useless: 78
+    rank: 10, name: "미들마이스트 레드", latin: "Middlemist camellia", emoji: "🌺",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Middlemist%27s_Red_001.jpg/480px-Middlemist%27s_Red_001.jpg",
+    ytQuery: "Middlemist red rarest flower world",
+    desc: "세상에 단 두 그루만 남아있는 꽃입니다. 하나는 영국 런던의 첼시 피직 가든, 다른 하나는 뉴질랜드에 있습니다. 18세기 중국에서 가져온 이후 중국에서는 멸종되어 버렸습니다.",
+    tags: [{t:"전 세계 2그루", c:"tag-toxic"},{t:"18세기 도입", c:"tag-fun"},{t:"멸종위기", c:"tag-weird"}], rare: 99
   },
   {
-    rank: 9,
-    name: "벨라도나 (deadly nightshade)",
-    latin: "Atropa belladonna",
-    emoji: "🫐",
-    desc: "맛있어 보이는 보라색 열매를 맺지만, 먹으면 사망할 수 있는 맹독성 식물입니다. 과거 독약으로 사용되었고, 지금은 아무도 키우려 하지 않아 잡초처럼 버려집니다. 먹을 수 없고 보기에도 위험합니다.",
-    tags: [{t:"치명적 독성", c:"tag-toxic"},{t:"못 먹음", c:"tag-useless"},{t:"위험한 외모", c:"tag-weird"}],
-    useless: 82
+    rank: 9, name: "울레미 파인", latin: "Wollemia nobilis", emoji: "🌲",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Wollemia_nobilis_ANBG.jpg/480px-Wollemia_nobilis_ANBG.jpg",
+    ytQuery: "Wollemi pine rare dinosaur tree discovery",
+    desc: "공룡과 함께 살았던 나무로 9000만 년 전부터 존재했습니다. 1994년 호주 협곡에서 겨우 100그루 미만이 발견되었습니다. 발견 전까지는 화석으로만 알려진 '살아있는 화석'입니다.",
+    tags: [{t:"살아있는 화석", c:"tag-fun"},{t:"9000만 년 역사", c:"tag-weird"},{t:"100그루 미만", c:"tag-toxic"}], rare: 97
   },
   {
-    rank: 8,
-    name: "더치맨스 파이프 칸타로프",
-    latin: "Aristolochia grandiflora",
-    emoji: "🪣",
-    desc: "곤충을 함정으로 유인해 꽃가루를 묻힌 뒤 놔주는 기묘한 식물입니다. 냄새는 끔찍하고, 먹거나 약으로 쓸 수도 없으며, 보기도 흉측합니다. 자연의 사기꾼이지만 사기를 쳐도 번식률이 낮습니다.",
-    tags: [{t:"곤충 사기꾼", c:"tag-weird"},{t:"냄새 최악", c:"tag-useless"},{t:"저출산", c:"tag-fun"}],
-    useless: 85
+    rank: 8, name: "제이드 바인", latin: "Strongylodon macrobotrys", emoji: "💎",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Strongylodon_macrobotrys.jpg/480px-Strongylodon_macrobotrys.jpg",
+    ytQuery: "Jade vine rare blue green flower Philippines",
+    desc: "필리핀 원시림에서만 자라는 청록색 보석 같은 꽃입니다. 서식지 파괴로 야생 개체수가 극도로 줄었으며, 수분을 담당하는 박쥐도 함께 줄어 이중으로 위기입니다.",
+    tags: [{t:"청록색 꽃", c:"tag-weird"},{t:"박쥐 수분", c:"tag-fun"},{t:"서식지 파괴", c:"tag-toxic"}], rare: 93
   },
   {
-    rank: 7,
-    name: "점핑 촙탈 선인장",
-    latin: "Cylindropuntia fulgida",
-    emoji: "🌵",
-    desc: "가시가 너무 날카롭고 잘 부러져서 살짝 스치기만 해도 몸에 달라붙습니다. 먹을 수 없고, 그늘도 없고, 건드리면 무조건 다칩니다. 사막에서 가장 위험한 등산 파트너로 불립니다.",
-    tags: [{t:"만지면 죽음", c:"tag-toxic"},{t:"무용지물", c:"tag-useless"},{t:"사막의 악당", c:"tag-weird"}],
-    useless: 87
+    rank: 7, name: "고블린 샤크 선인장", latin: "Discocactus subterraneo-proliferans", emoji: "🌵",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Discocactus_horstii.jpg/480px-Discocactus_horstii.jpg",
+    ytQuery: "Discocactus rare cactus Brazil endangered",
+    desc: "브라질에서만 발견되는 초희귀 선인장으로 야생 개체수가 50그루 미만으로 추정됩니다. 야간에만 꽃을 피우고 다음 날 아침이면 지는 단 하루짜리 꽃을 가졌습니다.",
+    tags: [{t:"50그루 미만", c:"tag-toxic"},{t:"하룻밤 꽃", c:"tag-weird"},{t:"브라질 한정", c:"tag-fun"}], rare: 91
   },
   {
-    rank: 6,
-    name: "실버 와틀 (아카시아)",
-    latin: "Acacia dealbata",
-    emoji: "💛",
-    desc: "예쁜 노란 꽃으로 유명하지만, 강력한 알레르기 유발 식물입니다. 꽃가루가 날리는 봄철이면 인근 주민들을 재채기 지옥으로 몰아넣습니다. 관상용으로 심었다가 모두가 후회하는 식물 1위.",
-    tags: [{t:"알레르기 폭탄", c:"tag-toxic"},{t:"예쁜데 위험", c:"tag-weird"},{t:"봄의 재앙", c:"tag-fun"}],
-    useless: 70
+    rank: 6, name: "코카이오 나무", latin: "Cocculus haplophyllus", emoji: "🌳",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Cocculus_orbiculatus_leaves.jpg/480px-Cocculus_orbiculatus_leaves.jpg",
+    ytQuery: "rarest trees world endangered species",
+    desc: "하와이 제도에만 서식하는 극희귀 식물로 현재 야생에 10그루 미만만 남아있습니다. 외래 동물에 의한 새싹 훼손과 서식지 파괴로 자연 번식이 거의 불가능한 상태입니다.",
+    tags: [{t:"10그루 미만", c:"tag-toxic"},{t:"하와이 고유종", c:"tag-weird"},{t:"번식 불가", c:"tag-fun"}], rare: 88
   },
   {
-    rank: 5,
-    name: "배런워트 (주교의 모자)",
-    latin: "Epimedium grandiflorum",
-    emoji: "🎩",
-    desc: "꽃 모양이 주교의 모자를 닮았다는 이유로 이름 붙었습니다. 먹을 수 없고, 향기도 없으며, 약용 효과도 매우 미미합니다. 정원에 심으면 어디로 퍼지는지도 몰라서 관리가 불가능해집니다.",
-    tags: [{t:"통제 불능", c:"tag-weird"},{t:"존재감 없음", c:"tag-useless"},{t:"이름만 멋짐", c:"tag-fun"}],
-    useless: 73
+    rank: 5, name: "바오밥 그란디디에리", latin: "Adansonia grandidieri", emoji: "🏺",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Madagascar_Baobab.jpg/480px-Madagascar_Baobab.jpg",
+    ytQuery: "Adansonia grandidieri baobab Madagascar endangered",
+    desc: "마다가스카르 서해안의 '바오밥 나무 길'로 유명한 이 나무는 현재 멸종위기종입니다. 수천 년을 사는 나무지만 새로운 개체가 거의 자라지 못해 군집이 점점 줄어들고 있습니다.",
+    tags: [{t:"수천 년 수명", c:"tag-fun"},{t:"마다가스카르 한정", c:"tag-weird"},{t:"신규 번식 불가", c:"tag-toxic"}], rare: 85
   },
   {
-    rank: 4,
-    name: "울프스베인 (투구꽃)",
-    latin: "Aconitum napellus",
-    emoji: "🪖",
-    desc: "유럽에서 가장 독성 강한 식물 중 하나. 만지기만 해도 피부로 독이 흡수됩니다. 꽃은 예쁘지만 심으면 안 되고, 먹으면 절대 안 되며, 근처에 있어도 위험합니다. 존재 자체가 위협인 식물.",
-    tags: [{t:"피부흡수 독", c:"tag-toxic"},{t:"만지면 위험", c:"tag-useless"},{t:"보기만 해야 함", c:"tag-weird"}],
-    useless: 91
+    rank: 4, name: "자보란디", latin: "Pilocarpus microphyllus", emoji: "🍃",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Pilocarpus_pennatifolius.jpg/480px-Pilocarpus_pennatifolius.jpg",
+    ytQuery: "Pilocarpus jaborandi rare endangered Amazon",
+    desc: "아마존 원시림에서 발견되는 이 식물은 과도한 의약 성분 채취로 야생 개체가 급감했습니다. 녹내장 치료제 원료로 알려지자 무분별한 채취가 시작되어 현재 멸종위기에 처해 있습니다.",
+    tags: [{t:"의약 원료", c:"tag-fun"},{t:"과채취 피해", c:"tag-toxic"},{t:"아마존 한정", c:"tag-weird"}], rare: 82
   },
   {
-    rank: 3,
-    name: "웰위치아",
-    latin: "Welwitschia mirabilis",
-    emoji: "🌪️",
-    desc: "수명이 2000년에 달하는 나미브 사막의 식물. 잎이 두 장밖에 없고 바람에 찢겨 지저분해 보입니다. 식용도 불가, 약용도 거의 없음. 2000년을 살아남았지만 아무도 유용하다고 생각하지 않는 진정한 생존자.",
-    tags: [{t:"2000년 생존", c:"tag-fun"},{t:"완전히 무용", c:"tag-useless"},{t:"사막의 혼돈", c:"tag-weird"}],
-    useless: 93
+    rank: 3, name: "라플레시아 아르놀디", latin: "Rafflesia arnoldii", emoji: "🌸",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Rafflesia_arnoldii.jpg/480px-Rafflesia_arnoldii.jpg",
+    ytQuery: "Rafflesia arnoldii world largest flower rare",
+    desc: "세계에서 가장 큰 꽃으로 지름이 최대 1m, 무게 11kg에 달합니다. 잎도 줄기도 뿌리도 없이 오직 숙주 식물 속에서만 자라며, 개화 시기를 예측하기 거의 불가능해 목격 자체가 행운입니다.",
+    tags: [{t:"세계 최대 꽃", c:"tag-fun"},{t:"개화 예측 불가", c:"tag-weird"},{t:"기생 생존", c:"tag-toxic"}], rare: 95
   },
   {
-    rank: 2,
-    name: "스타펠리아 (썩은 고기 꽃)",
-    latin: "Stapelia gigantea",
-    emoji: "🥩",
-    desc: "꽃이 피면 반경 5미터 안에 있는 모든 생물이 고통받습니다. 썩어가는 고기 냄새를 완벽하게 재현하며 파리를 속여 수분을 합니다. 관상식물로 키우다가 꽃이 피면 집에서 도망가야 합니다.",
-    tags: [{t:"냄새 테러", c:"tag-toxic"},{t:"파리 전용", c:"tag-weird"},{t:"실내 반입 금지", c:"tag-useless"}],
-    useless: 96
+    rank: 2, name: "탈리폿 야자", latin: "Corypha umbraculifera", emoji: "🌴",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Talipot_Palm_Flower.jpg/480px-Talipot_Palm_Flower.jpg",
+    ytQuery: "Talipot palm largest inflorescence rare bloom",
+    desc: "평생 단 한 번 꽃을 피우는 야자나무입니다. 30~80년을 살다가 수십억 개의 꽃을 피우고 죽습니다. 그 꽃차례는 세계 최대로 높이 8m까지 자라며, 지구상에서 가장 장엄한 식물의 죽음입니다.",
+    tags: [{t:"평생 1회 개화", c:"tag-weird"},{t:"꽃차례 8m", c:"tag-fun"},{t:"개화 후 사망", c:"tag-toxic"}], rare: 90
   },
   {
-    rank: 1,
-    name: "백년초 용설란 (사이잘)",
-    latin: "Agave sisalana",
-    emoji: "🏆",
-    desc: "평생 한 번만 꽃을 피우고 죽는 식물입니다. 꽃을 피우는 데 10~30년이 걸리고, 피자마자 죽습니다. 섬유 추출에 쓰이지만 가시가 너무 날카로워 작업자가 다치기 일쑤이고, 수확량도 형편없습니다. 생애 최대 업적이 자기 죽음인 최고의 쓸모없음 챔피언.",
-    tags: [{t:"평생 1회 꽃", c:"tag-fun"},{t:"꽃피고 사망", c:"tag-useless"},{t:"쓸모없음 챔피언", c:"tag-toxic"}],
-    useless: 99
+    rank: 1, name: "사이크라멘 소말리쿰", latin: "Cyclamen somalense", emoji: "🏆",
+    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Cyclamen_somalense.jpg/480px-Cyclamen_somalense.jpg",
+    ytQuery: "rarest plant world nearly extinct Somalia",
+    desc: "소말리아 단 한 지역에서만 자라는 지구상 가장 희귀한 식물 중 하나입니다. 전 세계 야생 개체수가 수백 그루 이하로 추정되며, 내전과 기후변화로 서식지가 사라져 이름조차 모르는 사람이 대부분입니다.",
+    tags: [{t:"소말리아 단독 서식", c:"tag-toxic"},{t:"수백 그루 미만", c:"tag-weird"},{t:"희귀 챔피언", c:"tag-fun"}], rare: 100
   }
 ];
 
 const medals = { 1: 'gold', 2: 'silver', 3: 'bronze' };
 
-function buildCards() {
+async function buildCards() {
   const section = document.getElementById('cards');
-  [...plants].reverse().forEach((p, i) => {
+  const reversed = [...plants].reverse();
+
+  for (let i = 0; i < reversed.length; i++) {
+    const p = reversed[i];
     const delay = i * 0.05;
     const medalClass = medals[p.rank] ? ` ${medals[p.rank]}` : '';
     const tagsHtml = p.tags.map(t => `<span class="tag ${t.c}">${t.t}</span>`).join('');
+    const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(p.ytQuery)}`;
+
     const card = document.createElement('article');
     card.className = 'rank-card';
     card.style.transitionDelay = `${delay}s`;
+
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'rank-img-wrap';
+    imgWrap.title = 'YouTube에서 보기 🎬';
+    imgWrap.style.cursor = 'pointer';
+    imgWrap.addEventListener('click', () => window.open(ytUrl, '_blank'));
+
+    const img = document.createElement('img');
+    img.alt = p.name;
+    img.loading = 'lazy';
+    // Use Wikipedia image proxy to bypass hotlinking restrictions
+    img.src = `https://images.weserv.nl/?url=${encodeURIComponent(p.img)}&w=200&h=200&fit=cover&output=jpg`;
+    img.onerror = function() {
+      this.replaceWith(Object.assign(document.createElement('div'), {
+        className: 'img-placeholder', textContent: p.emoji
+      }));
+    };
+    imgWrap.appendChild(img);
+
+    const ytBadge = document.createElement('div');
+    ytBadge.className = 'yt-badge';
+    ytBadge.textContent = '▶ YouTube';
+    imgWrap.appendChild(ytBadge);
+
     card.innerHTML = `
       <div class="rank-num">
         <span class="rank-label">RANK</span>
         <span class="rank-number${medalClass}">${p.rank}</span>
-        <div class="rank-emoji">${p.emoji}</div>
       </div>
       <div class="rank-body">
         <div class="rank-name">${p.name}</div>
@@ -479,14 +546,15 @@ function buildCards() {
         <p class="rank-desc">${p.desc}</p>
         <div class="tags">${tagsHtml}</div>
         <div class="useless-meter">
-          <span class="meter-label">🗑️ 쓸모없음 지수</span>
-          <div class="meter-bar"><div class="meter-fill" style="--fill:${p.useless}%"></div></div>
-          <span class="meter-label" style="min-width:36px;text-align:right">${p.useless}%</span>
+          <span class="meter-label">💎 희귀도 지수</span>
+          <div class="meter-bar"><div class="meter-fill" style="--fill:${p.rare}%"></div></div>
+          <span class="meter-label" style="min-width:36px;text-align:right">${p.rare}%</span>
         </div>
       </div>
     `;
+    card.querySelector('.rank-num').appendChild(imgWrap);
     section.appendChild(card);
-  });
+  }
 }
 
 // Floating leaves
@@ -514,8 +582,7 @@ function observeCards() {
 }
 
 buildLeaves();
-buildCards();
-observeCards();
+buildCards().then(() => observeCards());
 </script>
 </body>
 </html>
