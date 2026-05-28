@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세상에서 가장 쓸모없는 식물 TOP 10</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0f0a;
+    --green-dark: #1a2e1a;
+    --green-mid: #2d5a27;
+    --green-bright: #4caf50;
+    --green-lime: #8bc34a;
+    --yellow: #f9c922;
+    --orange: #ff6b35;
+    --cream: #f5f0e8;
+    --text: #e8f5e9;
+    --muted: #7a9e7e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── INTRO ── */
+  #intro {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(ellipse at 60% 40%, #1a3d1a 0%, #0a0f0a 70%);
+  }
+
+  .bg-leaves {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .leaf {
+    position: absolute;
+    font-size: clamp(2rem, 5vw, 5rem);
+    opacity: 0.07;
+    animation: drift linear infinite;
+    user-select: none;
+  }
+
+  @keyframes drift {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.07; }
+    90%  { opacity: 0.07; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  .channel-badge {
+    background: var(--green-bright);
+    color: #000;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    padding: 0.3rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .intro-title {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    line-height: 1.1;
+    color: var(--cream);
+    animation: fadeDown 0.7s 0.1s ease both;
+  }
+
+  .intro-title span.highlight {
+    color: var(--yellow);
+    display: inline-block;
+  }
+
+  .intro-subtitle {
+    margin-top: 1.2rem;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--muted);
+    font-weight: 300;
+    animation: fadeDown 0.7s 0.2s ease both;
+  }
+
+  .scroll-cta {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    animation: fadeDown 0.7s 0.4s ease both;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .scroll-arrow {
+    width: 28px;
+    height: 28px;
+    border-right: 2px solid var(--green-bright);
+    border-bottom: 2px solid var(--green-bright);
+    transform: rotate(45deg);
+    animation: bounce 1.4s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50%       { transform: rotate(45deg) translateY(6px); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CARDS ── */
+  #cards {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .rank-card {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1.5rem;
+    background: var(--green-dark);
+    border: 1px solid #243d24;
+    border-radius: 12px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .rank-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .rank-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(76,175,80,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .rank-card:hover {
+    border-color: var(--green-bright);
+    box-shadow: 0 0 30px rgba(76,175,80,0.15);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .rank-num {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 0.3rem;
+  }
+
+  .rank-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .rank-number {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--green-bright);
+  }
+
+  .rank-number.gold   { color: var(--yellow); }
+  .rank-number.silver { color: #c0c0c0; }
+  .rank-number.bronze { color: #cd7f32; }
+
+  .rank-emoji {
+    font-size: 2rem;
+    margin-top: 0.4rem;
+  }
+
+  .rank-body {}
+
+  .rank-name {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: var(--cream);
+    margin-bottom: 0.25rem;
+  }
+
+  .rank-latin {
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  .rank-desc {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: #b8d4ba;
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .tag-useless  { background: rgba(255,107,53,0.2);  color: var(--orange); border: 1px solid rgba(255,107,53,0.4); }
+  .tag-weird    { background: rgba(139,195,74,0.15); color: var(--green-lime); border: 1px solid rgba(139,195,74,0.35); }
+  .tag-fun      { background: rgba(249,201,34,0.15); color: var(--yellow); border: 1px solid rgba(249,201,34,0.35); }
+  .tag-toxic    { background: rgba(220,50,50,0.15);  color: #ff6b6b; border: 1px solid rgba(220,50,50,0.3); }
+
+  .useless-meter {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .meter-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .meter-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .meter-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--green-mid), var(--green-bright));
+    width: 0;
+    transition: width 1.2s ease 0.3s;
+  }
+
+  .rank-card.visible .meter-fill {
+    width: var(--fill);
+  }
+
+  /* ── OUTRO ── */
+  #outro {
+    text-align: center;
+    padding: 5rem 2rem;
+    background: linear-gradient(180deg, var(--bg), var(--green-dark));
+  }
+
+  .outro-title {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+
+  .outro-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+  }
+
+  .like-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--green-bright);
+    color: #000;
+    border: none;
+    border-radius: 40px;
+    padding: 0.9rem 2.2rem;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+  }
+
+  .like-btn:hover { background: var(--green-lime); transform: scale(1.05); }
+  .like-btn:active { transform: scale(0.97); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 560px) {
+    .rank-card { grid-template-columns: 70px 1fr; gap: 1rem; padding: 1.2rem; }
+    .rank-number { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FLOATING LEAVES BG -->
+<div class="bg-leaves" id="bgLeaves"></div>
+
+<!-- ── INTRO ── -->
+<section id="intro">
+  <div class="channel-badge">🌿 식물 다큐멘터리</div>
+  <h1 class="intro-title">
+    세상에서<br>가장 <span class="highlight">쓸모없는</span> 식물<br>TOP 10
+  </h1>
+  <p class="intro-subtitle">존재 이유를 잃어버린 초록빛 친구들을 소개합니다</p>
+  <a class="scroll-cta" href="#cards">
+    지금 바로 확인하기
+    <div class="scroll-arrow"></div>
+  </a>
+</section>
+
+<!-- ── CARDS ── -->
+<section id="cards"></section>
+
+<!-- ── OUTRO ── -->
+<section id="outro">
+  <div class="outro-title">🌱 결론</div>
+  <p class="outro-sub">
+    이 식물들은 쓸모없어 보이지만,<br>
+    자연에서는 저마다의 이유가 있답니다.<br>
+    (아마도... 아마도요.)
+  </p>
+
+</section>
+
+<script>
+const plants = [
+  {
+    rank: 10,
+    name: "라플레시아",
+    latin: "Rafflesia arnoldii",
+    emoji: "🌸",
+    desc: "세계 최대의 꽃으로 지름이 무려 1m에 달합니다. 화려해 보이지만 썩은 고기 냄새를 풍기며, 광합성도 못하고, 먹을 수도 없습니다. 꽃이 피는 데 수년이 걸리지만 3~7일 만에 지는 초고비용 무능력자.",
+    tags: [{t:"악취의 왕", c:"tag-weird"},{t:"광합성 포기", c:"tag-useless"},{t:"기생식물", c:"tag-toxic"}],
+    useless: 78
+  },
+  {
+    rank: 9,
+    name: "벨라도나 (deadly nightshade)",
+    latin: "Atropa belladonna",
+    emoji: "🫐",
+    desc: "맛있어 보이는 보라색 열매를 맺지만, 먹으면 사망할 수 있는 맹독성 식물입니다. 과거 독약으로 사용되었고, 지금은 아무도 키우려 하지 않아 잡초처럼 버려집니다. 먹을 수 없고 보기에도 위험합니다.",
+    tags: [{t:"치명적 독성", c:"tag-toxic"},{t:"못 먹음", c:"tag-useless"},{t:"위험한 외모", c:"tag-weird"}],
+    useless: 82
+  },
+  {
+    rank: 8,
+    name: "더치맨스 파이프 칸타로프",
+    latin: "Aristolochia grandiflora",
+    emoji: "🪣",
+    desc: "곤충을 함정으로 유인해 꽃가루를 묻힌 뒤 놔주는 기묘한 식물입니다. 냄새는 끔찍하고, 먹거나 약으로 쓸 수도 없으며, 보기도 흉측합니다. 자연의 사기꾼이지만 사기를 쳐도 번식률이 낮습니다.",
+    tags: [{t:"곤충 사기꾼", c:"tag-weird"},{t:"냄새 최악", c:"tag-useless"},{t:"저출산", c:"tag-fun"}],
+    useless: 85
+  },
+  {
+    rank: 7,
+    name: "점핑 촙탈 선인장",
+    latin: "Cylindropuntia fulgida",
+    emoji: "🌵",
+    desc: "가시가 너무 날카롭고 잘 부러져서 살짝 스치기만 해도 몸에 달라붙습니다. 먹을 수 없고, 그늘도 없고, 건드리면 무조건 다칩니다. 사막에서 가장 위험한 등산 파트너로 불립니다.",
+    tags: [{t:"만지면 죽음", c:"tag-toxic"},{t:"무용지물", c:"tag-useless"},{t:"사막의 악당", c:"tag-weird"}],
+    useless: 87
+  },
+  {
+    rank: 6,
+    name: "실버 와틀 (아카시아)",
+    latin: "Acacia dealbata",
+    emoji: "💛",
+    desc: "예쁜 노란 꽃으로 유명하지만, 강력한 알레르기 유발 식물입니다. 꽃가루가 날리는 봄철이면 인근 주민들을 재채기 지옥으로 몰아넣습니다. 관상용으로 심었다가 모두가 후회하는 식물 1위.",
+    tags: [{t:"알레르기 폭탄", c:"tag-toxic"},{t:"예쁜데 위험", c:"tag-weird"},{t:"봄의 재앙", c:"tag-fun"}],
+    useless: 70
+  },
+  {
+    rank: 5,
+    name: "배런워트 (주교의 모자)",
+    latin: "Epimedium grandiflorum",
+    emoji: "🎩",
+    desc: "꽃 모양이 주교의 모자를 닮았다는 이유로 이름 붙었습니다. 먹을 수 없고, 향기도 없으며, 약용 효과도 매우 미미합니다. 정원에 심으면 어디로 퍼지는지도 몰라서 관리가 불가능해집니다.",
+    tags: [{t:"통제 불능", c:"tag-weird"},{t:"존재감 없음", c:"tag-useless"},{t:"이름만 멋짐", c:"tag-fun"}],
+    useless: 73
+  },
+  {
+    rank: 4,
+    name: "울프스베인 (투구꽃)",
+    latin: "Aconitum napellus",
+    emoji: "🪖",
+    desc: "유럽에서 가장 독성 강한 식물 중 하나. 만지기만 해도 피부로 독이 흡수됩니다. 꽃은 예쁘지만 심으면 안 되고, 먹으면 절대 안 되며, 근처에 있어도 위험합니다. 존재 자체가 위협인 식물.",
+    tags: [{t:"피부흡수 독", c:"tag-toxic"},{t:"만지면 위험", c:"tag-useless"},{t:"보기만 해야 함", c:"tag-weird"}],
+    useless: 91
+  },
+  {
+    rank: 3,
+    name: "웰위치아",
+    latin: "Welwitschia mirabilis",
+    emoji: "🌪️",
+    desc: "수명이 2000년에 달하는 나미브 사막의 식물. 잎이 두 장밖에 없고 바람에 찢겨 지저분해 보입니다. 식용도 불가, 약용도 거의 없음. 2000년을 살아남았지만 아무도 유용하다고 생각하지 않는 진정한 생존자.",
+    tags: [{t:"2000년 생존", c:"tag-fun"},{t:"완전히 무용", c:"tag-useless"},{t:"사막의 혼돈", c:"tag-weird"}],
+    useless: 93
+  },
+  {
+    rank: 2,
+    name: "스타펠리아 (썩은 고기 꽃)",
+    latin: "Stapelia gigantea",
+    emoji: "🥩",
+    desc: "꽃이 피면 반경 5미터 안에 있는 모든 생물이 고통받습니다. 썩어가는 고기 냄새를 완벽하게 재현하며 파리를 속여 수분을 합니다. 관상식물로 키우다가 꽃이 피면 집에서 도망가야 합니다.",
+    tags: [{t:"냄새 테러", c:"tag-toxic"},{t:"파리 전용", c:"tag-weird"},{t:"실내 반입 금지", c:"tag-useless"}],
+    useless: 96
+  },
+  {
+    rank: 1,
+    name: "백년초 용설란 (사이잘)",
+    latin: "Agave sisalana",
+    emoji: "🏆",
+    desc: "평생 한 번만 꽃을 피우고 죽는 식물입니다. 꽃을 피우는 데 10~30년이 걸리고, 피자마자 죽습니다. 섬유 추출에 쓰이지만 가시가 너무 날카로워 작업자가 다치기 일쑤이고, 수확량도 형편없습니다. 생애 최대 업적이 자기 죽음인 최고의 쓸모없음 챔피언.",
+    tags: [{t:"평생 1회 꽃", c:"tag-fun"},{t:"꽃피고 사망", c:"tag-useless"},{t:"쓸모없음 챔피언", c:"tag-toxic"}],
+    useless: 99
+  }
+];
+
+const medals = { 1: 'gold', 2: 'silver', 3: 'bronze' };
+
+function buildCards() {
+  const section = document.getElementById('cards');
+  [...plants].reverse().forEach((p, i) => {
+    const delay = i * 0.05;
+    const medalClass = medals[p.rank] ? ` ${medals[p.rank]}` : '';
+    const tagsHtml = p.tags.map(t => `<span class="tag ${t.c}">${t.t}</span>`).join('');
+    const card = document.createElement('article');
+    card.className = 'rank-card';
+    card.style.transitionDelay = `${delay}s`;
+    card.innerHTML = `
+      <div class="rank-num">
+        <span class="rank-label">RANK</span>
+        <span class="rank-number${medalClass}">${p.rank}</span>
+        <div class="rank-emoji">${p.emoji}</div>
+      </div>
+      <div class="rank-body">
+        <div class="rank-name">${p.name}</div>
+        <div class="rank-latin">${p.latin}</div>
+        <p class="rank-desc">${p.desc}</p>
+        <div class="tags">${tagsHtml}</div>
+        <div class="useless-meter">
+          <span class="meter-label">🗑️ 쓸모없음 지수</span>
+          <div class="meter-bar"><div class="meter-fill" style="--fill:${p.useless}%"></div></div>
+          <span class="meter-label" style="min-width:36px;text-align:right">${p.useless}%</span>
+        </div>
+      </div>
+    `;
+    section.appendChild(card);
+  });
+}
+
+// Floating leaves
+function buildLeaves() {
+  const emojis = ['🍃','🌿','🍀','🌱','🪴','🌾','🍂'];
+  const container = document.getElementById('bgLeaves');
+  for (let i = 0; i < 20; i++) {
+    const el = document.createElement('span');
+    el.className = 'leaf';
+    el.textContent = emojis[i % emojis.length];
+    el.style.left = `${Math.random() * 100}%`;
+    el.style.animationDuration = `${8 + Math.random() * 14}s`;
+    el.style.animationDelay = `${-Math.random() * 20}s`;
+    el.style.fontSize = `${1.5 + Math.random() * 3}rem`;
+    container.appendChild(el);
+  }
+}
+
+// Intersection observer
+function observeCards() {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.rank-card').forEach(c => io.observe(c));
+}
+
+buildLeaves();
+buildCards();
+observeCards();
+</script>
+</body>
+</html>
